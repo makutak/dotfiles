@@ -1,0 +1,5 @@
+#!/bin/sh
+git branch -a | grep -v HEAD \
+  | fzf --preview 'git log --color=always --pretty=format:"%C(yellow)%h %C(reset)%s %C(green)(%cr)%C(reset)" -10 $(echo {} | sed -E "s/^[* ]*//")' \
+  | sed -E 's/^[* ]*//; s|remotes/[^/]+/||' \
+  | xargs git checkout
