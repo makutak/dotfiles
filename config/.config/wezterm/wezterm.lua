@@ -2,11 +2,16 @@ local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
 -- カラーテーマ
-config.color_scheme = 'Ubuntu'
+config.color_scheme = 'Dracula'
 
 -- フォント
 config.font = wezterm.font('Ricty ShinDiminished')
-config.font_size = 16
+-- OSごとにフォントサイズを分岐（Mac: 20, Linux: 16）
+if wezterm.target_triple:find('darwin') then
+  config.font_size = 20
+else
+  config.font_size = 16
+end
 
 -- デフォルトウィンドウサイズ
 config.initial_cols = 80
