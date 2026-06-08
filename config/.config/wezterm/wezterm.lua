@@ -2,7 +2,7 @@ local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
 -- カラーテーマ
-config.color_scheme = 'Dracula'
+config.color_scheme = 'Dracula+'
 
 -- フォント
 config.font = wezterm.font('Ricty ShinDiminished')
