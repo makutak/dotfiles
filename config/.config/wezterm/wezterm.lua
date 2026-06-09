@@ -5,12 +5,12 @@ local config = wezterm.config_builder()
 config.color_scheme = 'Dracula+'
 
 -- フォント
-config.font = wezterm.font('Ricty ShinDiminished')
--- OSごとにフォントサイズを分岐（Mac: 20, Linux: 16）
+config.font = wezterm.font('UDEV Gothic 35NF')
+-- OSごとにフォントサイズを分岐
 if wezterm.target_triple:find('darwin') then
-  config.font_size = 20
+  config.font_size = 18
 else
-  config.font_size = 16
+  config.font_size = 14
 end
 
 -- デフォルトウィンドウサイズ
