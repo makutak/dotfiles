@@ -26,8 +26,18 @@ config.default_cursor_style = 'SteadyBlock'
 -- 物理キーコードで判定（Ctrl+Shift+2 を C-@ として正しく扱うため）
 config.key_map_preference = 'Physical'
 
--- XIM経由でFcitx5にキーイベントを渡す（日本語入力に必要）
+-- IME 有効化（Mac/Linux 共通。Mac は macOS IME、Linux は XIM/fcitx5）
 config.use_ime = true
+
+-- Linux(X11 + fcitx5) 専用設定
+if wezterm.target_triple:find('linux') then
+  -- 接続先IMをXMODIFIERS非依存で明示（env事故があっても fcitx に繋ぐ）
+  config.xim_im_name = 'fcitx'
+  -- 未確定文字列をwezterm自身が端末フォントでインライン描画（デフォルト）。
+  -- これが効くには fcitx5側で On-The-Spot を有効にする必要がある:
+  --   ~/.config/fcitx5/conf/xim.conf に（セクション見出し無しで） UseOnTheSpot=True
+  config.ime_preedit_rendering = 'Builtin'
+end
 
 -- 選択時にクリップボードへコピー
 config.mouse_bindings = {
