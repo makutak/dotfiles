@@ -1,6 +1,8 @@
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
+config.audible_bell = "Disabled"
+
 -- カラーテーマ
 config.color_scheme = 'Dracula+'
 
@@ -79,5 +81,36 @@ config.keys = {
     end),
   },
 }
+
+-- タブ数で等分割するフラットタブバー
+config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = false
+config.tab_max_width = 9999  -- WezTerm側の打ち切りを無効化し、コールバックに委ねる
+
+wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
+  local title = (tab.tab_title and #tab.tab_title > 0) and tab.tab_title
+             or tab.active_pane.title
+  local label = string.format(' %d: %s ', tab.tab_index + 1, title)
+
+  if wezterm.column_width(label) > max_width then
+    label = wezterm.truncate_right(label, max_width - 1) .. '…'
+  end
+
+  -- max_width まで空白で埋めて等幅にする
+  local pad = max_width - wezterm.column_width(label)
+  if pad > 0 then
+    label = label .. string.rep(' ', pad)
+  end
+
+  -- Dracula+ パレット
+  local bg = tab.is_active and '#6272a4' or (hover and '#44475a' or '#282a36')
+  local fg = tab.is_active and '#f8f8f2' or '#6272a4'
+
+  return {
+    { Background = { Color = bg } },
+    { Foreground = { Color = fg } },
+    { Text = label },
+  }
+end)
 
 return config
