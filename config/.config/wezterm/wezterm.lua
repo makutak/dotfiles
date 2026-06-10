@@ -39,6 +39,10 @@ if wezterm.target_triple:find('linux') then
   config.ime_preedit_rendering = 'Builtin'
 end
 
+if wezterm.target_triple:find('darwin') then
+   config.macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL'
+end
+
 -- 選択時にクリップボードへコピー
 config.mouse_bindings = {
   {
