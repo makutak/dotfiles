@@ -1,0 +1,19 @@
+#!/bin/sh
+# Delete local branches that are safe to remove:
+#   - merged into the current branch (git branch --merged)
+#   - or whose upstream is gone (squash-merged PRs never show up in --merged)
+protected='\*|develop|master|dev|main'
+
+targets=$(
+  {
+    git branch --merged
+    git branch -vv | awk '/: gone\]/{print $1}'
+  } | egrep -v "$protected" | sort -u
+)
+
+if [ -z "$targets" ]; then
+  echo "no branches to delete"
+  exit 0
+fi
+
+echo "$targets" | xargs git branch -D

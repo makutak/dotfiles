@@ -12,4 +12,3 @@
   log-graph = log --graph --date=short --pretty=format:'%Cgreen%h %cd %Cblue%cn %Creset%s'
   log-all = log --graph --all --color --pretty='%C(yellow)%x09%h%C(reset) %cd%x09%cn%x09%s %C(auto)%d%C(reset)' --date=short
   current-branch = rev-parse --abbrev-ref HEAD
-  delete-merged-branch = "!f () { git branch --merged|egrep -v '\\*|develop|master|dev|main' |xargs git branch -D; };f"
