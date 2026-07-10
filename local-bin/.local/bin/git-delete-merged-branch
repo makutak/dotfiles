@@ -2,11 +2,16 @@
 # Delete local branches that are safe to remove:
 #   - merged into the current branch (git branch --merged)
 #   - or whose upstream is gone (squash-merged PRs never show up in --merged)
-protected='\*|develop|master|dev|main'
+current=$(git symbolic-ref --short HEAD 2>/dev/null)
+protected="^($current|develop|master|dev|main)\$"
 
+# --format gives bare names (no leading whitespace / '*'), matching the
+# awk output below byte-for-byte so `sort -u` can actually dedupe branches
+# that show up from both sources (a duplicate ref crashes `git branch -D`
+# with "multiple updates for ref ... not allowed").
 targets=$(
   {
-    git branch --merged
+    git branch --format='%(refname:short)' --merged
     git branch -vv | awk '/: gone\]/{print $1}'
   } | egrep -v "$protected" | sort -u
 )
